@@ -1,12 +1,12 @@
 import fs from "fs";
 import path from "path";
-import { fetchOesteNews } from "./scrapers/oeste.js";
-import { fetchEpochNews } from "./scrapers/epoch.js"
+import { fetchOesteNews } from "./scrapers/oeste/list.js";
+import { fetchEpochNews } from "./scrapers/epoch/list.js";
 // import { fetchOutroNews } from './scrapers/outro-site.js'; // Exemplo para o futuro
 
 const CACHE_DIR = "./cache";
-//const CACHE_EXPIRATION = 60 * 60 * 1000; // 1 hora em milissegundos
-const CACHE_EXPIRATION =  1000; // 1 hora em milissegundos
+const CACHE_EXPIRATION = 60 * 60 * 1000; // 1 hora em milissegundos
+//const CACHE_EXPIRATION =  1000; // 1 hora em milissegundos
 
 /**
  * Função para gerenciar o cache e a chamada dos scrapers
@@ -16,12 +16,12 @@ async function getNews(source) {
 
     // 1. Verifica se existe cache válido
     if (fs.existsSync(cacheFile)) {
-//        console.log("Verificando o tempo do cache\n\n\n");
+        //        console.log("Verificando o tempo do cache\n\n\n");
         const stats = fs.statSync(cacheFile);
         const isExpired = Date.now() - stats.mtimeMs > CACHE_EXPIRATION;
 
         if (!isExpired) {
-  //          console.log("Carregando o cache\n\n\n");
+            //          console.log("Carregando o cache\n\n\n");
             const cachedData = fs.readFileSync(cacheFile, "utf-8");
             return JSON.parse(cachedData);
         }
